@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Happy Birthday My Love</title>
+  <style>
+    :root {
+      --bg1: #fff0f6;
+      --bg2: #ffe3ec;
+      --pink: #ff4d8d;
+      --pink-dark: #d6336c;
+      --gold: #ffd166;
+      --text: #4a2a38;
+      --white: #ffffff;
+      --shadow: 0 18px 40px rgba(214, 51, 108, 0.18);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.95), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(255,255,255,0.65), transparent 30%),
+        linear-gradient(160deg, var(--bg1), var(--bg2));
+      overflow-x: hidden;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      position: relative;
+    }
+
+    .hearts, .sparkles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .heart, .sparkle {
+      position: absolute;
+      opacity: 0.18;
+      animation: floatUp linear infinite;
+    }
+
+    .heart { font-size: 24px; }
+    .sparkle { font-size: 16px; }
+
+    @keyframes floatUp {
+      from {
+        transform: translateY(20px) scale(0.8);
+        opacity: 0;
+      }
+      20% { opacity: 0.2; }
+      to {
+        transform: translateY(-110vh) scale(1.2);
+        opacity: 0;
+      }
+    }
+
+    .card {
+      position: relative;
+      z-index: 1;
+      width: min(100%, 430px);
+      background: rgba(255,255,255,0.78);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.7);
+      border-radius: 30px;
+      padding: 28px 22px 26px;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255, 77, 141, 0.12);
+      color: var(--pink-dark);
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.4px;
+      margin-bottom: 16px;
+    }
+
+    .photo-frame {
+      width: 126px;
+      height: 126px;
+      margin: 0 auto 18px;
+      border-radius: 50%;
+      padding: 5px;
+      background: linear-gradient(135deg, #ff7eb3, #ffd166);
+      box-shadow: 0 10px 24px rgba(255, 77, 141, 0.22);
+    }
+
+    .photo {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(180deg, #fff7fa, #ffe8f0);
+      font-size: 44px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(32px, 8vw, 44px);
+      line-height: 1.08;
+      color: var(--pink-dark);
+    }
+
+    .name {
+      margin-top: 8px;
+      font-size: clamp(20px, 5vw, 26px);
+      font-weight: 800;
+      color: #7a294d;
+    }
+
+    .subtitle {
+      margin: 14px 0 16px;
+      font-size: 15px;
+      line-height: 1.65;
+      color: #6b4654;
+    }
+
+    .message {
+      text-align: left;
+      background: rgba(255,255,255,0.85);
+      border: 1px solid rgba(255, 77, 141, 0.12);
+      border-radius: 22px;
+      padding: 16px;
+      line-height: 1.75;
+      font-size: 15px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+    }
+
+    .message strong { color: var(--pink-dark); }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    button {
+      appearance: none;
+      border: none;
+      border-radius: 16px;
+      padding: 14px 12px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+    }
+
+    button:active { transform: scale(0.98); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #ff5c96, #ff8fab);
+      color: white;
+      box-shadow: 0 12px 24px rgba(255, 92, 150, 0.25);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.9);
+      color: var(--pink-dark);
+      border: 1px solid rgba(255, 77, 141, 0.16);
+    }
+
+    .footer {
+      margin-top: 18px;
+      font-size: 13px;
+      color: #8f6777;
+    }
+
+    .popup {
+      position: fixed;
+      inset: 0;
+      background: rgba(98, 19, 49, 0.3);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 20;
+    }
+
+    .popup.show { display: flex; }
+
+    .popup-box {
+      width: min(100%, 360px);
+      background: white;
+      border-radius: 24px;
+      padding: 24px 18px;
+      text-align: center;
+      box-shadow: 0 22px 50px rgba(0,0,0,0.16);
+      animation: pop 0.28s ease;
+    }
+
+    @keyframes pop {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .popup-box h2 {
+      margin: 0 0 10px;
+      color: var(--pink-dark);
+      font-size: 24px;
+    }
+
+    .popup-box p {
+      margin: 0 0 16px;
+      color: #6a4d58;
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .close-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #ff5c96, #ff8fab);
+      color: white;
+    }
+
+    .music-note {
+      font-size: 12px;
+      margin-top: 8px;
+      color: #9b7585;
+    }
+
+    @media (max-width: 390px) {
+      body { padding: 14px; }
+      .card { padding: 24px 18px 22px; border-radius: 26px; }
+      .buttons { grid-template-columns: 1fr; }
+      .message { font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="hearts" id="hearts"></div>
+  <div class="sparkles" id="sparkles"></div>
+
+  <main class="card">
+    <div class="badge">🎂 Sinh nhật đặc biệt 💖</div>
+
+    <div class="photo-frame">
+      <div class="photo">👑</div>
+    </div>
+
+    <h1>Happy Birthday</h1>
+    <div class="name">Em yêu của anh</div>
+
+    <p class="subtitle">
+      Chúc em có một ngày sinh nhật thật vui, thật hạnh phúc,
+      và nhận được thật nhiều yêu thương.
+    </p>
+
+    <section class="message">
+      <strong>Gửi em,</strong><br /><br />
+      Cảm ơn em vì đã xuất hiện trong cuộc đời anh và làm cho mọi ngày của anh trở nên ấm áp hơn.
+      Anh chúc em tuổi mới luôn xinh đẹp, mạnh khỏe, cười thật nhiều và đạt được mọi điều em mong muốn.<br /><br />
+      Mong rằng hôm nay sẽ là một ngày thật ngọt ngào, thật đáng nhớ, và trong những điều làm em vui,
+      anh sẽ luôn là một phần nhỏ bé nhưng đặc biệt nhất. 💗<br /><br />
+      <strong>Anh yêu em rất nhiều.</strong>
+    </section>
+
+    <div class="buttons">
+      <button class="btn-primary" id="surpriseBtn">Mở bất ngờ ✨</button>
+      <button class="btn-secondary" id="musicBtn">Bật / Tắt nhạc 🎵</button>
+    </div>
+
+    <div class="music-note">Có thể thay ảnh, tên và lời chúc trực tiếp trong file HTML.</div>
+    <div class="footer">Made with love 💝</div>
+  </main>
+
+  <div class="popup" id="popup">
+    <div class="popup-box">
+      <h2>🎉 Bất ngờ nè!</h2>
+      <p>
+        Chúc mừng sinh nhật tình yêu của anh!<br />
+        Mong em luôn rạng rỡ như hôm nay,<br />
+        hạnh phúc không chỉ trong ngày sinh nhật mà là mỗi ngày bên anh. 💞
+      </p>
+      <button class="close-btn" id="closePopup">Em biết rồi nè 🥰</button>
+    </div>
+  </div>
+
+  <audio id="bgMusic" loop playsinline>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg" />
+  </audio>
+
+  <script>
+    const hearts = document.getElementById('hearts');
+    const sparkles = document.getElementById('sparkles');
+    const popup = document.getElementById('popup');
+    const surpriseBtn = document.getElementById('surpriseBtn');
+    const closePopup = document.getElementById('closePopup');
+    const musicBtn = document.getElementById('musicBtn');
+    const bgMusic = document.getElementById('bgMusic');
+
+    function createFloating(container, symbol, count, minSize, maxSize, minDuration, maxDuration) {
+      for (let i = 0; i < count; i++) {
+        const el = document.createElement('div');
+        el.className = symbol === '💖' ? 'heart' : 'sparkle';
+        el.textContent = symbol;
+        el.style.left = Math.random() * 100 + 'vw';
+        el.style.bottom = (-10 - Math.random() * 30) + 'px';
+        el.style.fontSize = (Math.random() * (maxSize - minSize) + minSize) + 'px';
+        el.style.animationDuration = (Math.random() * (maxDuration - minDuration) + minDuration) + 's';
+        el.style.animationDelay = (Math.random() * 8) + 's';
+        container.appendChild(el);
+      }
+    }
+
+    createFloating(hearts, '💖', 14, 18, 34, 10, 18);
+    createFloating(sparkles, '✨', 18, 10, 20, 8, 16);
+
+    surpriseBtn.addEventListener('click', () => {
+      popup.classList.add('show');
+      triggerConfetti();
+    });
+
+    closePopup.addEventListener('click', () => popup.classList.remove('show'));
+    popup.addEventListener('click', (e) => {
+      if (e.target === popup) popup.classList.remove('show');
+    });
+
+    let isPlaying = false;
+    musicBtn.addEventListener('click', async () => {
+      try {
+        if (!isPlaying) {
+          await bgMusic.play();
+          isPlaying = true;
+        } else {
+          bgMusic.pause();
+          isPlaying = false;
+        }
+      } catch (err) {
+        alert('Trình duyệt cần người dùng chạm vào nút để phát nhạc.');
+      }
+    });
+
+    function triggerConfetti() {
+      for (let i = 0; i < 24; i++) {
+        const confetti = document.createElement('div');
+        confetti.textContent = ['🎉', '💗', '✨', '🎂'][Math.floor(Math.random() * 4)];
+        confetti.style.position = 'fixed';
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.top = '-20px';
+        confetti.style.fontSize = (18 + Math.random() * 18) + 'px';
+        confetti.style.zIndex = '30';
+        confetti.style.pointerEvents = 'none';
+        confetti.style.transition = 'transform 2.8s linear, opacity 2.8s ease';
+        document.body.appendChild(confetti);
+
+        requestAnimationFrame(() => {
+          confetti.style.transform = `translateY(${window.innerHeight + 80}px) rotate(${Math.random() * 520 - 260}deg)`;
+          confetti.style.opacity = '0';
+        });
+
+        setTimeout(() => confetti.remove(), 3000);
+      }
+    }
+  </script>
+</body>
+</html>
