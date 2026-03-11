@@ -202,7 +202,7 @@
     .popup.show { display: flex; }
 
     .popup-box {
-      width: min(100%, 800px);
+      width: min(100%, 600px);
       background: white;
       border-radius: 24px;
       padding: 24px 18px;
@@ -211,22 +211,109 @@
       animation: pop 0.28s ease;
     }
 
-    .video-container {
+    .text-animation-container {
       position: relative;
       width: 100%;
-      padding-bottom: 56.25%; /* 16:9 aspect ratio */
-      margin-bottom: 16px;
-      border-radius: 12px;
+      min-height: 180px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       overflow: hidden;
+      background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #ffecd2 100%);
+      border-radius: 20px;
+      padding: 30px 20px;
+      box-shadow: 0 8px 32px rgba(255, 77, 141, 0.3);
     }
 
-    .video-container iframe {
+    .animated-text {
+      font-size: 22px;
+      font-weight: 900;
+      background: linear-gradient(45deg, #d6336c, #ff4d8d, #ff7eb3, #ff4d8d, #d6336c);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      white-space: normal;
+      text-align: center;
+      line-height: 1.6;
+      animation: gradientShift 3s ease infinite, fadeInScale 1s ease-out, float 3s ease-in-out infinite;
+      text-shadow: 0 0 20px rgba(255, 77, 141, 0.3);
+      letter-spacing: 1px;
+    }
+
+    @keyframes gradientShift {
+      0%, 100% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+    }
+
+    @keyframes fadeInScale {
+      0% {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    /* Thêm sparkles cho text */
+    .text-animation-container::before,
+    .text-animation-container::after {
+      content: '✨';
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
+      font-size: 24px;
+      animation: sparkle 2s ease-in-out infinite;
+    }
+
+    .text-animation-container::before {
+      top: 15px;
+      left: 15px;
+      animation-delay: 0s;
+    }
+
+    .text-animation-container::after {
+      bottom: 15px;
+      right: 15px;
+      animation-delay: 1s;
+    }
+
+    @keyframes sparkle {
+      0%, 100% {
+        opacity: 0.3;
+        transform: scale(1) rotate(0deg);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.3) rotate(180deg);
+      }
+    }
+
+    /* Tối ưu cho iPhone 14 (390x844) */
+    @media (max-width: 430px) {
+      .text-animation-container {
+        min-height: 160px;
+        padding: 25px 15px;
+      }
+      
+      .animated-text {
+        font-size: 20px;
+        line-height: 1.5;
+      }
     }
 
     @keyframes pop {
@@ -235,9 +322,15 @@
     }
 
     .popup-box h2 {
-      margin: 0 0 10px;
+      margin: 0 0 15px;
       color: var(--pink-dark);
-      font-size: 24px;
+      font-size: 26px;
+      animation: bounce 1s ease;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
     }
 
     .popup-box p {
@@ -305,22 +398,16 @@
   <div class="popup" id="popup">
     <div class="popup-box">
       <h2>🎉 Bất ngờ nè!</h2>
-      <div class="video-container">
-        <video 
-          id="localVideo"
-          width="100%" 
-          height="100%" 
-          controls
-          autoplay
-          style="border-radius: 12px; object-fit: cover;">
-          <source src="xe_may_1.mp4" type="video/mp4">
-          Trình duyệt không hỗ trợ video.
-        </video>
+      <div class="text-animation-container">
+        <div class="animated-text">
+          💕 Ngày Mai Là Kỷ Niệm Ngày Chúng Mình Yêu Nhau 💕
+        </div>
       </div>
       <p>
         Chúc mừng sinh nhật tình yêu của anh!<br />
         Mong em luôn rạng rỡ như hôm nay,<br />
         hạnh phúc không chỉ trong ngày sinh nhật mà là mỗi ngày bên anh. 💞
+      </p>
       </p>
       <button class="close-btn" id="closePopup">Em biết rồi nè 🥰</button>
     </div>
@@ -332,7 +419,6 @@
     const popup = document.getElementById('popup');
     const surpriseBtn = document.getElementById('surpriseBtn');
     const closePopup = document.getElementById('closePopup');
-    const localVideo = document.getElementById('localVideo');
 
     function createFloating(container, symbol, count, minSize, maxSize, minDuration, maxDuration) {
       for (let i = 0; i < count; i++) {
@@ -358,17 +444,11 @@
 
     closePopup.addEventListener('click', () => {
       popup.classList.remove('show');
-      // Dừng video khi đóng popup
-      localVideo.pause();
-      localVideo.currentTime = 0;
     });
     
     popup.addEventListener('click', (e) => {
       if (e.target === popup) {
         popup.classList.remove('show');
-        // Dừng video khi đóng popup
-        localVideo.pause();
-        localVideo.currentTime = 0;
       }
     });
 
