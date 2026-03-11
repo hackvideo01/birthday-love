@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Happy Birthday My Love</title>
+  <title>Happy Birthday Cục Cưng</title>
   <style>
     :root {
       --bg1: #fff0f6;
@@ -152,9 +152,8 @@
     .message strong { color: var(--pink-dark); }
 
     .buttons {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      display: flex;
+      justify-content: center;
       margin-top: 18px;
     }
 
@@ -203,13 +202,31 @@
     .popup.show { display: flex; }
 
     .popup-box {
-      width: min(100%, 360px);
+      width: min(100%, 800px);
       background: white;
       border-radius: 24px;
       padding: 24px 18px;
       text-align: center;
       box-shadow: 0 22px 50px rgba(0,0,0,0.16);
       animation: pop 0.28s ease;
+    }
+
+    .video-container {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%; /* 16:9 aspect ratio */
+      margin-bottom: 16px;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
     }
 
     @keyframes pop {
@@ -245,7 +262,6 @@
     @media (max-width: 390px) {
       body { padding: 14px; }
       .card { padding: 24px 18px 22px; border-radius: 26px; }
-      .buttons { grid-template-columns: 1fr; }
       .message { font-size: 14px; }
     }
   </style>
@@ -262,25 +278,24 @@
     </div>
 
     <h1>Happy Birthday</h1>
-    <div class="name">Em yêu của anh</div>
+    <div class="name">Cục Cưng của anh</div>
 
     <p class="subtitle">
-      Chúc em có một ngày sinh nhật thật vui, thật hạnh phúc,
+      Chúc Cục Cưng có một ngày sinh nhật thật vui, thật hạnh phúc,
       và nhận được thật nhiều yêu thương.
     </p>
 
     <section class="message">
-      <strong>Gửi em,</strong><br /><br />
-      Cảm ơn em vì đã xuất hiện trong cuộc đời anh và làm cho mọi ngày của anh trở nên ấm áp hơn.
-      Anh chúc em tuổi mới luôn xinh đẹp, mạnh khỏe, cười thật nhiều và đạt được mọi điều em mong muốn.<br /><br />
-      Mong rằng hôm nay sẽ là một ngày thật ngọt ngào, thật đáng nhớ, và trong những điều làm em vui,
+      <strong>Gửi Cục Cưng,</strong><br /><br />
+      Cảm ơn Cục Cưng vì đã xuất hiện trong cuộc đời anh và làm cho mọi ngày của anh trở nên ấm áp hơn.
+      Anh chúc Cục Cưng tuổi mới luôn xinh đẹp, mạnh khỏe, cười thật nhiều và đạt được mọi điều Cục Cưng mong muốn.<br /><br />
+      Mong rằng hôm nay sẽ là một ngày thật ngọt ngào, thật đáng nhớ, và trong những điều làm Cục Cưng vui,
       anh sẽ luôn là một phần nhỏ bé nhưng đặc biệt nhất. 💗<br /><br />
-      <strong>Anh yêu em rất nhiều.</strong>
+      <strong>Anh yêu Cục Cưng rất nhiều.</strong>
     </section>
 
     <div class="buttons">
       <button class="btn-primary" id="surpriseBtn">Mở bất ngờ ✨</button>
-      <button class="btn-secondary" id="musicBtn">Bật / Tắt nhạc 🎵</button>
     </div>
 
     <div class="music-note">Có thể thay ảnh, tên và lời chúc trực tiếp trong file HTML.</div>
@@ -290,6 +305,18 @@
   <div class="popup" id="popup">
     <div class="popup-box">
       <h2>🎉 Bất ngờ nè!</h2>
+      <div class="video-container">
+        <video 
+          id="localVideo"
+          width="100%" 
+          height="100%" 
+          controls
+          autoplay
+          style="border-radius: 12px; object-fit: cover;">
+          <source src="xe_may_1.mp4" type="video/mp4">
+          Trình duyệt không hỗ trợ video.
+        </video>
+      </div>
       <p>
         Chúc mừng sinh nhật tình yêu của anh!<br />
         Mong em luôn rạng rỡ như hôm nay,<br />
@@ -299,18 +326,13 @@
     </div>
   </div>
 
-  <audio id="bgMusic" loop playsinline>
-    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg" />
-  </audio>
-
   <script>
     const hearts = document.getElementById('hearts');
     const sparkles = document.getElementById('sparkles');
     const popup = document.getElementById('popup');
     const surpriseBtn = document.getElementById('surpriseBtn');
     const closePopup = document.getElementById('closePopup');
-    const musicBtn = document.getElementById('musicBtn');
-    const bgMusic = document.getElementById('bgMusic');
+    const localVideo = document.getElementById('localVideo');
 
     function createFloating(container, symbol, count, minSize, maxSize, minDuration, maxDuration) {
       for (let i = 0; i < count; i++) {
@@ -334,23 +356,19 @@
       triggerConfetti();
     });
 
-    closePopup.addEventListener('click', () => popup.classList.remove('show'));
-    popup.addEventListener('click', (e) => {
-      if (e.target === popup) popup.classList.remove('show');
+    closePopup.addEventListener('click', () => {
+      popup.classList.remove('show');
+      // Dừng video khi đóng popup
+      localVideo.pause();
+      localVideo.currentTime = 0;
     });
-
-    let isPlaying = false;
-    musicBtn.addEventListener('click', async () => {
-      try {
-        if (!isPlaying) {
-          await bgMusic.play();
-          isPlaying = true;
-        } else {
-          bgMusic.pause();
-          isPlaying = false;
-        }
-      } catch (err) {
-        alert('Trình duyệt cần người dùng chạm vào nút để phát nhạc.');
+    
+    popup.addEventListener('click', (e) => {
+      if (e.target === popup) {
+        popup.classList.remove('show');
+        // Dừng video khi đóng popup
+        localVideo.pause();
+        localVideo.currentTime = 0;
       }
     });
 
