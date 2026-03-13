@@ -98,8 +98,8 @@
     }
 
     .photo-frame {
-      width: 126px;
-      height: 126px;
+      width: 150px;
+      height: 150px;
       margin: 0 auto 18px;
       border-radius: 50%;
       padding: 5px;
@@ -114,7 +114,15 @@
       display: grid;
       place-items: center;
       background: linear-gradient(180deg, #fff7fa, #ffe8f0);
-      font-size: 44px;
+      font-size: 46px;
+      overflow: hidden;
+    }
+
+    .photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
     }
 
     h1 {
@@ -364,10 +372,12 @@
   <div class="sparkles" id="sparkles"></div>
 
   <main class="card">
-    <div class="badge">🎂 Sinh nhật đặc biệt 💖</div>
+    <div class="badge">🎂 Sinh nhật Cục Cưng 💖</div>
 
     <div class="photo-frame">
-      <div class="photo">👑</div>
+      <div class="photo">
+        <img src="love.png" alt="Love">
+      </div>
     </div>
 
     <h1>Happy Birthday</h1>
@@ -383,7 +393,7 @@
       Cảm ơn Cục Cưng vì đã xuất hiện trong cuộc đời anh và làm cho mọi ngày của anh trở nên ấm áp hơn.
       Anh chúc Cục Cưng tuổi mới luôn xinh đẹp, mạnh khỏe, cười thật nhiều và đạt được mọi điều Cục Cưng mong muốn.<br /><br />
       Mong rằng hôm nay sẽ là một ngày thật ngọt ngào, thật đáng nhớ, và trong những điều làm Cục Cưng vui,
-      anh sẽ luôn là một phần nhỏ bé nhưng đặc biệt nhất. 💗<br /><br />
+      anh sẽ luôn bên cạnh yêu thương Cục Cưng mãi mãi. 💗<br /><br />
       <strong>Anh yêu Cục Cưng rất nhiều.</strong>
     </section>
 
@@ -391,8 +401,8 @@
       <button class="btn-primary" id="surpriseBtn">Mở bất ngờ ✨</button>
     </div>
 
-    <div class="music-note">Có thể thay ảnh, tên và lời chúc trực tiếp trong file HTML.</div>
-    <div class="footer">Made with love 💝</div>
+    <!-- <div class="music-note">Có thể thay ảnh, tên và lời chúc trực tiếp trong file HTML.</div> -->
+    <div class="footer">Cục Xương 💝</div>
   </main>
 
   <div class="popup" id="popup">
@@ -400,7 +410,7 @@
       <h2>🎉 Bất ngờ nè!</h2>
       <div class="text-animation-container">
         <div class="animated-text">
-          💕 Ngày Mai Là Kỷ Niệm Ngày Chúng Mình Yêu Nhau 💕
+          💕 Ngày Mai Là Kỷ Niệm Ngày Chúng Mình Yêu Nhau đó💕
         </div>
       </div>
       <p>
