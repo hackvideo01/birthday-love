@@ -45,13 +45,14 @@
       inset: 0;
       pointer-events: none;
       overflow: hidden;
-      z-index: 0;
+      z-index: 1000;
     }
 
     .heart, .sparkle {
       position: absolute;
       opacity: 0.18;
       animation: floatUp linear infinite;
+      z-index: 1000;
     }
 
     .heart { font-size: 24px; }
@@ -405,7 +406,7 @@
     .firework {
       position: fixed;
       pointer-events: none;
-      z-index: 100;
+      z-index: 999;
     }
 
     .firework-particle {
@@ -414,6 +415,7 @@
       height: 6px;
       border-radius: 50%;
       animation: fireworkExplosion 1.5s ease-out forwards;
+      z-index: 999;
     }
 
     @keyframes fireworkExplosion {
@@ -638,8 +640,13 @@
       }
     }
 
-    createFloating(hearts, '💖', 14, 18, 34, 10, 18);
-    createFloating(sparkles, '✨', 18, 10, 20, 8, 16);
+    createFloating(hearts, '💖', 20, 18, 34, 10, 18); // Tăng từ 14 lên 20
+    createFloating(sparkles, '✨', 25, 10, 20, 8, 16); // Tăng từ 18 lên 25
+    
+    // Thêm hoa bay
+    createFloating(hearts, '🌸', 12, 16, 28, 12, 20);
+    createFloating(hearts, '🌺', 10, 16, 28, 12, 20);
+    createFloating(sparkles, '💫', 15, 12, 22, 9, 17);
 
     surpriseBtn.addEventListener('click', () => {
       popup.classList.add('show');
@@ -648,12 +655,25 @@
 
     closePopup.addEventListener('click', () => {
       popup.classList.remove('show');
+      
+      // Chuyển nhạc ngay lập tức trong event click để mobile không chặn
+      if (isPlaying) {
+        bgMusic.pause();
+        currentMusic = finalMusic;
+        finalMusic.play().then(() => {
+          console.log('Final music started');
+          musicControl.textContent = '🔊';
+        }).catch(err => {
+          console.log('Final music play error:', err);
+        });
+      }
+      
       // Trigger fireworks
       triggerFireworks();
-      // Show final message and change music after fireworks
+      
+      // Show final message after fireworks
       setTimeout(() => {
         finalMessageOverlay.classList.add('show');
-        switchToFinalMusic();
       }, 2000);
     });
     
@@ -662,30 +682,6 @@
         popup.classList.remove('show');
       }
     });
-
-    // Function to switch to final music
-    function switchToFinalMusic() {
-      // Fade out current music
-      const fadeOut = setInterval(() => {
-        if (bgMusic.volume > 0.1) {
-          bgMusic.volume -= 0.1;
-        } else {
-          bgMusic.pause();
-          bgMusic.volume = 1.0;
-          clearInterval(fadeOut);
-          
-          // Start final music
-          currentMusic = finalMusic;
-          if (isPlaying) {
-            finalMusic.play().then(() => {
-              console.log('Final music playing');
-            }).catch(err => {
-              console.log('Final music play prevented:', err);
-            });
-          }
-        }
-      }, 100);
-    }
 
     function triggerConfetti() {
       for (let i = 0; i < 24; i++) {
@@ -711,8 +707,8 @@
 
     // Fireworks function
     function createFirework(x, y) {
-      const colors = ['#ff4d8d', '#ff7eb3', '#ffd166', '#d6336c', '#ff5c96'];
-      const particleCount = 30;
+      const colors = ['#ff4d8d', '#ff7eb3', '#ffd166', '#d6336c', '#ff5c96', '#fecfef', '#ff9a9e'];
+      const particleCount = 40; // Tăng từ 30 lên 40
       
       for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
@@ -722,7 +718,7 @@
         particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
         
         const angle = (Math.PI * 2 * i) / particleCount;
-        const velocity = 50 + Math.random() * 100;
+        const velocity = 60 + Math.random() * 120; // Tăng velocity để bắn xa hơn
         const tx = Math.cos(angle) * velocity;
         const ty = Math.sin(angle) * velocity;
         
@@ -736,14 +732,14 @@
     }
 
     function triggerFireworks() {
-      const fireworksCount = 15;
+      const fireworksCount = 60; // Tăng gấp đôi từ 30 lên 60
       
       for (let i = 0; i < fireworksCount; i++) {
         setTimeout(() => {
           const x = Math.random() * window.innerWidth;
-          const y = Math.random() * (window.innerHeight * 0.6);
+          const y = Math.random() * (window.innerHeight * 0.7); // Tăng vùng bắn
           createFirework(x, y);
-        }, i * 200);
+        }, i * 100); // Giảm delay xuống 100ms để bắn dày đặc hơn
       }
     }
   </script>
